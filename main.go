@@ -5,6 +5,7 @@ import (
 	"net/http"
 
 	"github.com/devezets/api-students/db"
+	
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 )
@@ -38,7 +39,9 @@ func createStudent(c echo.Context) error {
 	if err := c.Bind(&student); err != nil{
 		return err
 	}
-	db.AddStudent(student)
+	if err := db.AddStudent(student) ; err != nil {
+		return c.String(http.StatusInternalServerError , "Error to create student")
+	}
 	return c.String(http.StatusOK, "Create Student")
 }
 
